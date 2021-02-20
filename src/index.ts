@@ -218,6 +218,46 @@ type ContactMessenger2 = (
 // so we don't need to define the type of _contact and _message 
 // and the type of return of the emailer function
 // this is called as getting contextual reference from function types
-const emailer: ContactMessenger1 = (_contact, _message) => {
-    /* code */
+// const emailer: ContactMessenger1 = (_contact, _message) => {
+//     /* code */
+// }
+
+// construct signatures: similar to function/call signatures, except for using the "new" keywrd
+
+interface ContactMessenger3 {
+    new (...args: any[]): HasEmail | HasName
 }
+
+// interface over array
+
+/*erroneous*/
+// interface PhoneNumberDict {
+//     [numberName: string]: { areaCode: number, num: number }
+// }
+
+// const d: PhoneNumberDict = {}
+// if we do
+// d.abc // ts doesn't gives error here but it's an error, it is a hard to track down error in ts
+
+/*correct approach*/
+// by adding undefined, we force a check on d.abc
+interface PhoneNumberDict1 {
+    [numberName: string]: undefined | { areaCode: number, num: number }
+}
+
+const c: PhoneNumberDict1 = {}
+if (c.pq) {
+    c.pq
+}
+// or
+if (typeof c.abc === 'object') {
+    c.abc
+}
+
+
+
+
+
+
+
+
