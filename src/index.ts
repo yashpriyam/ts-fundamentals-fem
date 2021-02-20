@@ -175,29 +175,49 @@ export interface HasEmail {
 // function contactInfo(method: "phone", ...people: HasName[]): void
 // overloading the signatures
 
-function sendMessage(
-    this: HasEmail & HasName,
-    prefferredMethod: "pone" | "email"
-) {
-    if(prefferredMethod === "email") {
-        console.log("sendEmail");
-        sendEmail(this)
-    } else {
-        console.log("sendMessage");
-        sendTextMessage(this)        
-    }
+// function sendMessage(
+//     this: HasEmail & HasName,
+//     prefferredMethod: "pone" | "email"
+// ) {
+//     if(prefferredMethod === "email") {
+//         console.log("sendEmail");
+//         sendEmail(this)
+//     } else {
+//         console.log("sendMessage");
+//         sendTextMessage(this)        
+//     }
+// }
+// const c = { name: "somename", phone: 21321312321, email: "dsdfsdfsdfsf" }
+
+// function invokeSoon(cb: any, timeout: number){
+//     setTimeout(() => cb.call(null), timeout)
+// }
+
+// invokeSoon(() => sendMessage('email'), 500) // this function won't work because we haen't deined what "this" will point to
+// const bound = () => sendMessage.bind(c, 500) // here we're passing an object for "this"
+// // since this: HasEmail & HasName
+// // thus c = { name: "somename", phone: 21321312321, email: "dsdfsdfsdfsf" }
+// invokeSoon(() => bound(), 600)
+
+// // with call/apply
+// invokeSoon(() => sendMessage.apply(c, ["phone"]), 500)
+
+
+// interface extending another interface
+interface ContactMessenger1 {
+    (contact: HasEmail | HasName, message: string): void
 }
-const c = { name: "somename", phone: 21321312321, email: "dsdfsdfsdfsf" }
 
-function invokeSoon(cb: any, timeout: number){
-    setTimeout(() => cb.call(null), timeout)
+// type alias extending interface
+type ContactMessenger2 = (
+    contact: HasEmail | HasName,
+    message: string
+) => void
+
+// for emailer function, we're using ContactMessenger1 interface, 
+// so we don't need to define the type of _contact and _message 
+// and the type of return of the emailer function
+// this is called as getting contextual reference from function types
+const emailer: ContactMessenger1 = (_contact, _message) => {
+    /* code */
 }
-
-invokeSoon(() => sendMessage('email'), 500) // this function won't work because we haen't deined what "this" will point to
-const bound = () => sendMessage.bind(c, 500) // here we're passing an object for "this"
-// since this: HasEmail & HasName
-// thus c = { name: "somename", phone: 21321312321, email: "dsdfsdfsdfsf" }
-invokeSoon(() => bound(), 600)
-
-// with call/apply
-invokeSoon(() => sendMessage.apply(c, ["phone"]), 500)
