@@ -198,3 +198,6 @@ const bound = () => sendMessage.bind(c, 500) // here we're passing an object for
 // since this: HasEmail & HasName
 // thus c = { name: "somename", phone: 21321312321, email: "dsdfsdfsdfsf" }
 invokeSoon(() => bound(), 600)
+
+// with call/apply
+invokeSoon(() => sendMessage.apply(c, ["phone"]), 500)
