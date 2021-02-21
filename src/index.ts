@@ -202,6 +202,15 @@ export interface HasEmail {
 // // with call/apply
 // invokeSoon(() => sendMessage.apply(c, ["phone"]), 500)
 
+/**Type aliases------------------ */
+// const x = [1,2,3,[5,6,7]]
+// type numVal = 1|2|3|numArr
+// type numArr = numVal[]  //numVal is defined as numArr and numArr is defined as numVal
+// ts compiler prevents you from creating self-referential type
+// solution is:
+// interface NumArr extends Array<numVal>
+//instead of creating a type Alias, create an interface which extends the type alias
+
 
 // interface extending another interface
 interface ContactMessenger1 {
@@ -241,21 +250,152 @@ interface ContactMessenger3 {
 
 /*correct approach*/
 // by adding undefined, we force a check on d.abc
+
+// this is called index signatures:
+// you can have 1 string index signature and 1 number index signature
 interface PhoneNumberDict1 {
-    [numberName: string]: undefined | { areaCode: number, num: number }
+    [numberName: string]: undefined | { areaCode: number; num: number; }
 }
 
-const c: PhoneNumberDict1 = {}
-if (c.pq) {
-    c.pq
+// const c: PhoneNumberDict1 = {}
+// c.abc
+// if (c.abc) {
+//     c.abc
+// }
+// // or
+// if (typeof c.abc === 'object') {
+//     c.abc
+// }
+// // or
+// if (typeof c.abc === 'string') {
+//     c.abc //the type of c.abc is shown as "never" means this could 
+//     // never be defined because any property
+//     // on object c can be either undefined or object { areaCode: number, num: number }
+// }
+
+// using the index signature interface
+
+// const phoneDict: PhoneNumberDict1 = {
+//     office: { areaCode: 321, num: 131232 },
+//     home: { areaCode: 21233, num: 2312323} //you can't have anyother name
+//     // in the object, make a spel mistake and ts will warn
+// }
+
+// redefining the PhoneNumberDict1 interface to add stuff to it:
+// interface PhoneNumberDict1 {
+//     home: {
+//         areaCode: number,
+//         num: number
+//     },
+//     office: {
+//         areaCode: number,
+//         num: number
+//     }
+// }
+// after doing this somehow magically we can add any new prop to phoneDict
+// const phoneDict1: PhoneNumberDict1 = {
+//     office: { areaCode: 321, num: 131232 },
+//     home: { areaCode: 21233, num: 2312323},
+//     iphone: { areaCode: 123131, num: 1231313} //this "iphone would not throw error"
+// }
+
+// --------Classes in typescript
+export class Contact implements HasEmail {
+    email: string;
+    name: string;
+    constructor(name: string, email: string) {
+        this.email = email;
+        this.name = name;
+    }
 }
-// or
-if (typeof c.abc === 'object') {
-    c.abc
+
+class ParamPropContact implements HasEmail {
+    constructor(
+        public name: string,
+        public email: string = "no email"
+    ){
+        //no-code
+    }
+}
+
+const x = new ParamPropContact('a', 'b')
+x.name
+x.email
+ 
+class ParamPropContact2 implements HasEmail {
+    constructor(
+        public name: string,
+        protected email: string = "no email"
+    ){
+        //no-code
+    }
+}
+const x2 = new ParamPropContact2('c', 'd')
+x2.name
+x2.email // --can't access email from outside as it is protected prop
+
+
+
+class OtherContact implements HasEmail, HasName {
+    protected age: number = 0
+    // or you can also do
+    // readonly age: number = 0
+    constructor(
+        public name: string,
+        public email: string,
+        public phone: number
+    ){
+        this.age = 35
+    }
+}
+
+class OtherContact2 implements HasEmail, HasName {
+    protected age: number = 0
+    private passwordVal: string | undefined
+    constructor(
+        public name: string,
+        public email: string,
+        public phone: number
+    ){
+        this.age = 35
+
+    }
+    get password(): string{ //any request to access the password will hit here
+        if(!this.passwordVal){
+            this.passwordVal = "password"
+        }
+        return this.passwordVal
+    }
 }
 
 
+// -----Abstract classess-------------
 
+abstract class AbstractContact implements HasEmail, HasEmail {
+    public abstract phone: number; //abstract field
+    constructor (
+        public email: string,
+        public name: string
+    ){}
+    abstract sendEmail(): void //abstract method
+}
+
+class FinalCount extends AbstractContact{
+    constructor(
+        public phone: number;
+        name: string;
+        email: string
+    ){
+        super(name, email)
+    }
+    // untill abstract method sendEmail is not added
+    // ts gives error on finalCount class
+    sendEmail(){
+        // mandatory
+        console.log("send email");
+    }
+
+}
 
 
 
