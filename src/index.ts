@@ -642,3 +642,70 @@ function brandA(value: string): BrandedA {
 function unbrandA(value: BrandedA): string {
     return (value as unknown) as string
 }
+
+// Mapped types:
+// a way of using an interface's keys to 
+// get the types associated with those keys
+
+interface CommunicationMethods {
+    email: HasEmail,
+    phone: HasName,
+    fax: { fax: number }
+}
+
+// in the example of overloading function signatures,
+// if we added new methods like fax here,
+// we will require to define more signatures,
+// tot ackle something like that we are creating Mapped types:
+
+// the type parametr K extends a key of CommunicationMethods interface
+function contact<K extends keyof CommunicationMethods >(
+    method: K,
+    contact: CommunicationMethods[K] //we are passing the key 
+    // to the interface and we will get the associated value
+    // this is what is called a Map types
+){
+//  
+}
+
+// now we don't need to define signatures
+// we still can't call the function with un-allowed combination
+// of params
+// function contact takes 2 args: method and contact
+// what ever the method isDefined, contact should
+// be its value in the CommunicationMethods interface object
+
+contact('email', { name: 'foo', email: "ingqwd" })
+contact('phone', { name: 'sdsdsd', phone: 31231313 })
+contact('fax', { fax: 13123123 })
+
+// contact can be called like this no other signature would be allowed
+// thanks to map types
+// contact('fax', { name: 'sdsdsd', phone: 31231313 }) //error
+// contact('phone', { fax: 13123123 }) //error
+
+type AllCommKeys = keyof CommunicationMethods
+type AllCommValues = CommunicationMethods[keyof CommunicationMethods ]
+
+// type query: querying for the type
+
+type ResolveType = typeof Promise.resolve
+let x: typeof Promise.resolve // declaring a variable x with its
+// type being the type of resolved value of the Promise
+// both are same
+
+// Conditional types: ternary operator for types
+// grab the type of the promise or let it pass if it is not
+// a promise
+type EventualType<T> = T extends Promise<infer S> ? S : T
+
+// T extends Promise<infer S> means if type T extends from Promise, 
+// extract the type that the promise resolves to 
+// keyword "infer" lets you pluck out the type to which the
+// promise resolves to 
+let a: EventualType<Promise<number>> // typeof a is number because it's
+// a promise which resolves to number 
+let b: EventualType<number[]> // typeof b is number[] ciz it's 
+// not a promise
+
+
