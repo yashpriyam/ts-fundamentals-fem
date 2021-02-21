@@ -466,3 +466,39 @@ function resolveOrTimeout<T>(promise: Promise<T>, timeout: number): Promise<T> {
     })
 }
 resolveOrTimeout(fetch(""), 3000)
+
+
+// Constraints and scopes:----------------------
+
+function arrayToDict<T extends { id: string }>(array: T[]): { [k: string]: T }{
+    // by this line (array: T[]): { [k: string]: T }, we're trying to 
+    // transofrm an array of type T to a dictionary
+    const out: {[ k: string ]: T } = {}
+    array.forEach(val => {
+        out[val.id] = val
+    })
+    return out
+}
+
+// we can also use in place of this <T extends { id: string }>(array: T[])
+// this: (array: ({ id: string })[])
+// we are defining the input arg explicitly to be of type array of objects 
+// with atleast the id property
+function arrayToDict1(array: ({ id: string })[]): { [k: string]: { id: string} }{
+    // by this line (array: T[]): { [k: string]: T }, we're trying to 
+    // transofrm an array of type T to a dictionary
+    const out: {[ k: string ]: { id: string} } = {}
+    array.forEach(val => {
+        out[val.id] = val
+    })
+    return out
+}
+
+// scopes of type parameters
+function startTuple<T>(a: T) {
+    return function finishTuple<U>(b: U){
+        return [a, b] as [T, U]
+    }
+}
+
+const myTuple = startTuple(["first"])(43)
