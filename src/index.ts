@@ -709,3 +709,35 @@ let b: EventualType<number[]> // typeof b is number[] ciz it's
 // not a promise
 
 
+// Built-In utility types 
+// Partials: it makes every type optional
+
+type MayHaveName = Partial<HasName>
+const me: MayHaveName = {} // me is of type HasName but
+// with everything optional
+
+// Pick: allows to pick whatever types we want from interface
+type HasThen<T> = Pick<Promise<T>, 'then' | 'catch'>
+
+let hasThen: HasThen<number> = Promise.resolve(4)
+hasThen.then
+
+type PickA = Pick<{a: 1, b: 2}, 'b'> //only type b will be available
+const y: PickA
+y.b //works
+y.a //error
+
+// Extract: allows to extract a type
+type OnlyNumbers = Extract<'a' | 'b' | 1 | 2, number>
+let z: OnlyNumbers
+z = 1 //works
+// z = 'sdsasd' // can't assign to strings
+// z = true // can't assign to boolean
+// can only be assigned to numbers 1 or 2
+// z = 4 // still error
+type OnlyStrings = Extract<'a' | 'b' | 1 | 2, string>
+let zz: OnlyStrings
+zz = 'a' //works
+zz = 1 //error
+
+
