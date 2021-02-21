@@ -725,7 +725,7 @@ hasThen.then
 type PickA = Pick<{a: 1, b: 2}, 'b'> //only type b will be available
 const y: PickA
 y.b //works
-y.a //error
+// y.a //error
 
 // Extract: allows to extract a type
 type OnlyNumbers = Extract<'a' | 'b' | 1 | 2, number>
@@ -738,6 +738,81 @@ z = 1 //works
 type OnlyStrings = Extract<'a' | 'b' | 1 | 2, string>
 let zz: OnlyStrings
 zz = 'a' //works
-zz = 1 //error
+// zz = 1 //error
 
+// Declaration merging: 
+// understand whether something is a value,
+// whether something is a type
+// understand how ts understands your code
 
+// identifiers: ts calls these as "symbols"
+// identifiers can be asssociated to up to 3 things:
+// a value, a type or a namespace (objects exporting somehting)
+function foo(){}
+interface bar {}
+namespace baz {
+    export const biz = 'hello'
+}
+// given a symbol, test if it can be used as a value
+//  if it's a symbol is a value, it should be able to be
+// assigned to something, a variable should be able to hold it
+// let xyz = foo // works since foo is a value
+// let xyz = bar // error as bar is a type but is being used as 
+// a value here
+// let xyz: bar // works as a type
+// let xyz: foo // error: foo is a value but used as type here
+
+// functions and variables are purely values
+// can only extract the type of a value using a type query 
+
+// interfaces are only types
+
+// classes pass both the type and the value test 
+class Contact {
+    name: string
+}
+
+// on one hand class is a factory to produce instances 
+// as a constructor/prototype
+// classes also have static methods
+// on the other hand classes can also be used as types
+
+const hello = Contact 
+const helloInstance: Contact = new Contact() //contact class as 
+// type and its new instance as value
+
+// when you declare a value, a type and a namespace
+// all with the same name, they stack on top of each other just like
+// they're defined
+class Album {
+    label: Album.AlbumLabel = new Album.AlbumLabel()
+}
+
+namespace Album {
+    export class AlbumLabel {}
+}
+
+interface Album {
+    artist: string
+}
+
+let al: Album //type test passed
+let alal = Album // value test passed
+let al2 = new Album()
+al2.artist
+al2.label // both works, interface stacks over class and allows for both
+
+export { Album } // namespace test passed
+
+// namespace can be regarded as sub classes
+class Addressbook {
+    contacts?: Contact[]
+}
+
+namespace Addressbook {
+    export class ABContact extends Contact {}
+}
+
+const ab = new Addressbook()
+ab.contacts.push(new Addressbook.ABContact())
+//  we can do similar things with functions as well 
