@@ -300,104 +300,137 @@ interface PhoneNumberDict1 {
 // }
 
 // --------Classes in typescript
-export class Contact implements HasEmail {
-    email: string;
-    name: string;
-    constructor(name: string, email: string) {
-        this.email = email;
-        this.name = name;
-    }
-}
+// export class Contact implements HasEmail {
+//     email: string;
+//     name: string;
+//     constructor(name: string, email: string) {
+//         this.email = email;
+//         this.name = name;
+//     }
+// }
 
-class ParamPropContact implements HasEmail {
-    constructor(
-        public name: string,
-        public email: string = "no email"
-    ){
-        //no-code
-    }
-}
+// class ParamPropContact implements HasEmail {
+//     constructor(
+//         public name: string,
+//         public email: string = "no email"
+//     ){
+//         //no-code
+//     }
+// }
 
-const x = new ParamPropContact('a', 'b')
-x.name
-x.email
+// const x = new ParamPropContact('a', 'b')
+// x.name
+// x.email
  
-class ParamPropContact2 implements HasEmail {
-    constructor(
-        public name: string,
-        protected email: string = "no email"
-    ){
-        //no-code
-    }
-}
-const x2 = new ParamPropContact2('c', 'd')
-x2.name
-x2.email // --can't access email from outside as it is protected prop
+// class ParamPropContact2 implements HasEmail {
+//     constructor(
+//         public name: string,
+//         protected email: string = "no email"
+//     ){
+//         //no-code
+//     }
+// }
+// const x2 = new ParamPropContact2('c', 'd')
+// x2.name
+// x2.email // --can't access email from outside as it is protected prop
 
 
 
-class OtherContact implements HasEmail, HasName {
-    protected age: number = 0
-    // or you can also do
-    // readonly age: number = 0
-    constructor(
-        public name: string,
-        public email: string,
-        public phone: number
-    ){
-        this.age = 35
-    }
-}
+// class OtherContact implements HasEmail, HasName {
+//     protected age: number = 0
+//     // or you can also do
+//     // readonly age: number = 0
+//     constructor(
+//         public name: string,
+//         public email: string,
+//         public phone: number
+//     ){
+//         this.age = 35
+//     }
+// }
 
-class OtherContact2 implements HasEmail, HasName {
-    protected age: number = 0
-    private passwordVal: string | undefined
-    constructor(
-        public name: string,
-        public email: string,
-        public phone: number
-    ){
-        this.age = 35
+// class OtherContact2 implements HasEmail, HasName {
+//     protected age: number = 0
+//     private passwordVal: string | undefined
+//     constructor(
+//         public name: string,
+//         public email: string,
+//         public phone: number
+//     ){
+//         this.age = 35
 
-    }
-    get password(): string{ //any request to access the password will hit here
-        if(!this.passwordVal){
-            this.passwordVal = "password"
-        }
-        return this.passwordVal
-    }
-}
+//     }
+//     get password(): string{ //any request to access the password will hit here
+//         if(!this.passwordVal){
+//             this.passwordVal = "password"
+//         }
+//         return this.passwordVal
+//     }
+// }
 
 
 // -----Abstract classess-------------
 
-abstract class AbstractContact implements HasEmail, HasEmail {
-    public abstract phone: number; //abstract field
-    constructor (
-        public email: string,
-        public name: string
-    ){}
-    abstract sendEmail(): void //abstract method
+// abstract class AbstractContact implements HasEmail, HasEmail {
+//     public abstract phone: number; //abstract field
+//     constructor (
+//         public email: string,
+//         public name: string
+//     ){}
+//     abstract sendEmail(): void //abstract method
+// }
+
+// class FinalCount extends AbstractContact{
+//     constructor(
+//         public phone: number;
+//         name: string;
+//         email: string
+//     ){
+//         super(name, email)
+//     }
+//     // untill abstract method sendEmail is not added
+//     // ts gives error on finalCount class
+//     sendEmail(){
+//         // mandatory
+//         console.log("send email");
+//     }
+
+// }
+
+
+
+
+
+// Practicing converting a js file to a ts File
+
+//Generics-------------------------
+
+// a simple wrapper function in js, 
+// just wraps the input into something and returns it
+// to use
+function wrappedValue(x) {
+    return {
+        value: x
+    }
+}
+// similarly we create an interface which is a wrapper for types
+// this interface has a "value" and "type" of that value is not fixed
+// it is what ever we pass as X,
+// so this is a generic (or generic type) can use this interface
+// at different places with different "type" for the "value" field inside it
+interface WrappedValue<X> {
+    value: X
 }
 
-class FinalCount extends AbstractContact{
-    constructor(
-        public phone: number;
-        name: string;
-        email: string
-    ){
-        super(name, email)
-    }
-    // untill abstract method sendEmail is not added
-    // ts gives error on finalCount class
-    sendEmail(){
-        // mandatory
-        console.log("send email");
-    }
+let val: WrappedValue<string[]> = { value: [] }
+//here the value is of "type" array of strings
+val.value
 
-}
+let val2: WrappedValue<string[]> = { value: '' }
+// this error occurs
+// Type 'string' is not assignable to type 'string[]'
+// The expected type comes from property 'value' 
+// which is declared here on type 'WrappedValue<string[]>'
 
-
-
-
-
+let num: WrappedValue<number[]> = { value: [] }
+//here the value is of "type" array of numbers
