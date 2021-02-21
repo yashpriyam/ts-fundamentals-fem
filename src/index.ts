@@ -495,10 +495,95 @@ function arrayToDict1(array: ({ id: string })[]): { [k: string]: { id: string} }
 }
 
 // scopes of type parameters
-function startTuple<T>(a: T) {
-    return function finishTuple<U>(b: U){
-        return [a, b] as [T, U]
-    }
+// function startTuple<T>(a: T) {
+//     return function finishTuple<U>(b: U){
+//         return [a, b] as [T, U]
+//     }
+// }
+
+// const myTuple = startTuple(["first"])(43)
+
+// -------when to use generics---------
+
+interface Shape {
+    draw()
+}
+interface Circle extends Shape {
+    radius: number
 }
 
-const myTuple = startTuple(["first"])(43)
+// function drawShapes<S extends Shape>(shapes: S[]) {
+//     shapes.forEach(s => s.draw())
+// }
+// another implementation
+
+// function drawShapes2(shapes: Shape[]) {
+//     shapes.forEach(s => s.draw())
+// }
+
+// ---creating a dictionary using generic type parameters
+
+//Dict is type alias, <T> generic type parameter, can be anything
+export type Dict<T> = {
+    [k: string]: T | undefined
+}
+// here we have defined a dictionary which can have any key value pair
+// where the k is of type string essentially
+// and its value can be undefined or of type T
+
+// Array.prototype.map, but for Dict
+// export function mapDict<T>(dict: Dict<T>){}
+// we've defined a function "mapDict" which takes an arg of
+// type Dict
+
+export function mapDict<T, S>(
+    dict: Dict<T>,
+    fn: (arg: T, idx: number) => S 
+    // the fn is a function which takes 2 args
+    // arg which is of type T means exactly of 
+    // the type of value of dict
+): Dict<S> { // this : Dict<S> states output or return of mapDict 
+    // will be of type Dict (object) with it's values of type S
+    const out: Dict<S> = {} 
+    // out will be an object whose key's values will be of type S
+    Object.keys(dict).forEach((dKey, idx) => {
+        const thisItem = dict[dKey]
+        if(typeof thisItem !== undefined){
+            out[dKey] = fn(thisItem, idx)
+        }
+    })
+    return out
+}
+// mapDict is function takes 2args, 1 of type Dict or object where
+// keys of string type are there and values of T type are present
+// while calling we've passed object with such type so <T> becomes string
+// the 2nd arg, fn, return an array of type T so is string[] so <S> is string[]
+// <T> string, <S> string[]
+mapDict({
+    a: 'a',
+    b: 'b'
+}, (str) => [str])
+
+//if we call it with object having numbers as value:
+// then <T> would become numbers and fn return them in an array
+// so <S> becomes number[]
+// <T> number, <S> string[]
+mapDict({
+    a: 2,
+    b: 3
+}, (str) => [str])
+// or
+// <T> number, <S> string[]
+mapDict({
+    a: 2,
+    b: 3
+}, (str) => [str.toString()])
+
+// <T> string, <S> { val: str }
+mapDict({
+    a: 'a',
+    b: 'b'
+}, (str) => ({ val: str }))
+
+// Array.prototype.reduce, but for Dict
+export function reduceDict<T>(dict: Dict<T>){}
