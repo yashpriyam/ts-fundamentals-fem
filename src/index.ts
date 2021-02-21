@@ -586,4 +586,59 @@ mapDict({
 }, (str) => ({ val: str }))
 
 // Array.prototype.reduce, but for Dict
-export function reduceDict<T>(dict: Dict<T>){}
+// export function reduceDict<T>(dict: Dict<T>){}
+
+//Top type and bottom types -----------------------------------
+// top type: any and unknown
+// type guards for narrowing the types of unknowns
+let myunknown: unknown
+// myunknown.split(', ') // can't use
+// so
+if (typeof myunknown === 'string' ){
+    myunknown.split(', ')
+}
+if (myunknown instanceof Promise){
+    myunknown.then(x => console.log(x))
+}
+// we can define our own type guards
+// a function takes an arg "x" of type "any" and 
+// returns arg "x" of type HasEmail
+function isHasEmail(x: any):x is HasEmail {
+    return typeof x.name === 'string' && typeof x.email === 'string'
+}
+
+if(isHasEmail(myunknown)){
+    console.log(myunknown.name, myunknown.email);
+}
+
+// guard for filtering undefined values
+function isDefined<T>(arg: T | undefined): arg is T {
+    return typeof arg !== 'undefined'
+}
+
+const list = ['a', 'b', 'c', undefined, 'e']
+const filtered = list.filter(isDefined)
+
+// it also does the same thing though, 
+// filters out the falsy values from array
+const filtered2 = list.filter(Boolean)
+
+// unknown === unknown of any type
+let aa: unknown = 43
+let bb: unknown = ['sd', 'sfd', 'grr', 's']
+aa = bb // bb can be assigned to aa since both are unknown, 
+// even though they are of different types
+
+// branded types
+
+interface BrandedA {
+    __this_is_branded_with_a: 'a'
+}
+
+function brandA(value: string): BrandedA {
+    return (value as unknown) as BrandedA
+}
+
+function unbrandA(value: BrandedA): string {
+    return (value as unknown) as string
+}
