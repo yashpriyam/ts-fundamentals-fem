@@ -442,5 +442,27 @@ interface FilterFunction<T = any> {
 }
 
 const stringFiters: FilterFunction<string> = val => typeof val === 'string'
-stringFiters(0) // throws erro
+stringFiters(0) // throws error
 stringFiters('abc') // works
+
+// but if we do, without any type for T, it falls back to "any" because of T = any in interface
+const stringFiters2: FilterFunction = val => val
+stringFiters2(0) // works
+
+
+// Type parameters:
+// We can have a promise which resolves to any value, 
+// the type of the value to which the promise resolves to, 
+// will become the type of the promise using this implementation:
+
+function resolveOrTimeout<T>(promise: Promise<T>, timeout: number): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+        const task = setTimeout(() => reject("time up"), timeout)
+        
+        promise.then(val => {
+            clearTimeout(task)
+            resolve(val)
+        })
+    })
+}
+resolveOrTimeout(fetch(""), 3000)
