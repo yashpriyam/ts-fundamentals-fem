@@ -408,11 +408,11 @@ interface PhoneNumberDict1 {
 // a simple wrapper function in js, 
 // just wraps the input into something and returns it
 // to use
-function wrappedValue(x) {
-    return {
-        value: x
-    }
-}
+// function wrappedValue(x) {
+//     return {
+//         value: x
+//     }
+// }
 // similarly we create an interface which is a wrapper for types
 // this interface has a "value" and "type" of that value is not fixed
 // it is what ever we pass as X,
@@ -422,11 +422,11 @@ interface WrappedValue<X> {
     value: X
 }
 
-let val: WrappedValue<string[]> = { value: [] }
+// let val: WrappedValue<string[]> = { value: [] }
 //here the value is of "type" array of strings
-val.value
+// val.value
 
-let val2: WrappedValue<string[]> = { value: '' }
+// let val2: WrappedValue<string[]> = { value: '' }
 // this error occurs
 // Type 'string' is not assignable to type 'string[]'
 // The expected type comes from property 'value' 
@@ -434,3 +434,13 @@ let val2: WrappedValue<string[]> = { value: '' }
 
 let num: WrappedValue<number[]> = { value: [] }
 //here the value is of "type" array of numbers
+
+// here we're declaring an interface where input can be
+// any type you want and output would be a boolean
+interface FilterFunction<T = any> {
+    (val: T): boolean
+}
+
+const stringFiters: FilterFunction<string> = val => typeof val === 'string'
+stringFiters(0) // throws erro
+stringFiters('abc') // works
