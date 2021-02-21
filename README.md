@@ -6,4 +6,4 @@ a lot of strict implications upon on the developer
 to minimize bugs and side effects and random 
 function outputs!!
 
-[![Yash's GitHub stats](https://github-readme-stats.vercel.app/api?username=yashpriyam)](https://github.com/anuraghazra/github-readme-stats)
+[![Yash's GitHub stats](https://github-readme-stats.vercel.app/api?username=yashpriyam&hide=stars)](https://github.com/anuraghazra/github-readme-stats)
