@@ -1,7 +1,7 @@
 Learning Typescript fundamentals with Mike North from LinkedIn
 
 Typescript is superset to javascript,
-capable of doing that javscript can do, and with
+capable of doing what javscript can do, and with
 a lot of strict implications upon on the developer
 to minimize bugs and side effects and random 
 function outputs!!
