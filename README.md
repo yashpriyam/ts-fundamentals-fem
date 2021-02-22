@@ -6,7 +6,7 @@ a lot of strict implications upon on the developer
 to minimize bugs and side effects and random 
 function outputs!!
 
-### Code 1. create a promise that resolves after sometimeCode
+### Code 1. create a promise that resolves after sometime
 ```typescript
 
 @param n number of miliseconds before the promise resolves
