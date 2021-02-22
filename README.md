@@ -59,26 +59,7 @@ export async function addNumber(a: number, b: number) {
   };
 ```
 
-### Code 4. Deciding variable types based on value/conditionals:
-```typescript
-// "any" is a top type
-
-  const newFunc = (z: any) => {
-    switch (true) {
-      case 3 === z:
-        z = "new string";
-        break;
-      case 5 === z:
-        z = 45;
-        break;
-      default:
-        z = true;
-        return z;
-    }
-    return z
-  };
-```
-### Code 5. Objects:
+### Code 4. Objects:
 ```typescript
 /**************** Object property's types cannot be changed **********/
 let xyz = {
@@ -108,7 +89,7 @@ let obj4: { first: string, second?: number } = { first: "were" } // allowed
 let obj5: { first: string, second?: number } = { first: "were", second: 23 } // allowed
 ```
 
-### Code 6. Arrays:
+### Code 5. Arrays:
 ```typescript
 
 let arr: number[] = [] // arr initialized asempty array, can contain only numbers
@@ -124,14 +105,14 @@ arr.push("asfssds")
 arr.push({a: 'a'})
 ```
 
-### Code 7. Tuples (Arrays with fixed length):
+### Code 6. Tuples (Arrays with fixed length):
 ```typescript
 let tup: [number, string, string, number] = [13, "asda", "sadas", 3422342] // allowed
 
 let tup: [number, string] = [] //not allowed
 ```
 
-### Code 8. Interfaces: for reusing types. --- interfaces are objects.
+### Code 7. Interfaces: for reusing types. --- interfaces are objects.
 ```typescript
 interface HasName {
     name: string,
