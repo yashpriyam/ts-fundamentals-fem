@@ -8,4 +8,4 @@ function outputs!!
 
 [![Yash's GitHub stats](https://github-readme-stats.vercel.app/api?username=yashpriyam&repo=ts-fundamentals-fem&hide=stars&show_icons=true&theme=onedark)](https://github.com/anuraghazra/github-readme-stats)
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=yashpriyam&hide=stars&show_icons=true&theme=onedark)](https://github.com/anuraghazra/github-readme-stats)
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=yashpriyam&hide=stars&show_icons=true&theme=onedark&langs_count=8)](https://github.com/anuraghazra/github-readme-stats)
