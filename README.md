@@ -129,6 +129,37 @@ let newObject1: HasName = { name: 'some name' }
 
 let newObject2: HasEmail = { name: 'some name', email: 'some@mail.com' }
 ```
-[![Yash's GitHub stats](https://github-readme-stats.vercel.app/api?username=yashpriyam&repo=ts-fundamentals-fem&hide=stars&show_icons=true&theme=onedark)](https://github.com/anuraghazra/github-readme-stats)
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=yashpriyam&hide=stars&show_icons=true&theme=onedark&langs_count=8)](https://github.com/anuraghazra/github-readme-stats)
+### Definitions:
+
+ - Type inferences: means typeScript itself picks p the type of any variable based on the initial value assigned to it. Eg: let x = 5; ts will infer x is of type number.
+ - Literal Types: a set of specific allowed values for a variable.
+Eg:
+```typescript
+/*
+here x is assigned to number 
+and since it’s declared with const
+it can’t be reassigned to anything else other than 6.
+*/
+const x = 6;
+
+// if y is of type see it’s value can only be the string ’dish’
+type sweet = ‘dish'
+let y: sweet = ‘dish’
+let y: sweet = ‘potato’
+```
+ - Type Annotations: adding inline type to variables. 
+
+Eg:-
+```typescript
+function add (a: number, b: number) {
+    return a + b
+}
+// the return type is infered as number by ts.
+```
+ - Typing Functions:
+```typescript
+function add (a: number, b: number): number {
+    return a+b
+}
+```
