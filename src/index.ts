@@ -45,7 +45,7 @@
 
 
 
-//  "z" her is top type
+//  "z" here is top type
 //   const newFunc = (z: any) => {
 //     switch (true) {
 //       case 3 === z:
@@ -83,6 +83,8 @@
 // let obj4: { first: string, second?: number } = { first: "were" } //works
 // let obj5: { first: string, second?: number } = { first: "were", second: 23 } //works
 // console.log(obj4, obj5);
+
+// 
 
 
 // Interfaces
@@ -170,14 +172,24 @@ export interface HasEmail {
 // }
 
 // // Function signatures: ways of calling this function:
-// console.log(function contactInfo(method: "email", ...people: HasEmail[]): void);
+// Function signatures and overloading - we can define a function call signature using either a type alias or an interface -
+//   interface TwoNumber {
+//     (x: number, y: number): number
+//   }
+//   OR
+//   type TwoNumber = (x: number, y: number) => number
+//   Now,
+//   const add: TwoNumber = (a,b) => a+b // no need to define arg type or return type of function
+//   const sub: TwoNumber = (a,b) => a-b // no need to define arg type or return type of function
+//   console.log(function contactInfo(method: "email", ...people: HasEmail[]): void);
+//   type TwoNumber = (x: number, y: number) => void // when the function is not supposed to return anything
 
-// function contactInfo(method: "phone", ...people: HasName[]): void
-// overloading the signatures
+//   function contactInfo(method: "phone", ...people: HasName[]): void
+//   overloading the signatures
 
 // function sendMessage(
 //     this: HasEmail & HasName,
-//     prefferredMethod: "pone" | "email"
+//     prefferredMethod: "phone" | "email"
 // ) {
 //     if(prefferredMethod === "email") {
 //         console.log("sendEmail");
@@ -187,13 +199,15 @@ export interface HasEmail {
 //         sendTextMessage(this)        
 //     }
 // }
+
+/**Typing "this"------------------ */
 // const c = { name: "somename", phone: 21321312321, email: "dsdfsdfsdfsf" }
 
 // function invokeSoon(cb: any, timeout: number){
 //     setTimeout(() => cb.call(null), timeout)
 // }
 
-// invokeSoon(() => sendMessage('email'), 500) // this function won't work because we haen't deined what "this" will point to
+// invokeSoon(() => sendMessage('email'), 500) // this function won't work because we haven't defined what "this" will point to
 // const bound = () => sendMessage.bind(c, 500) // here we're passing an object for "this"
 // // since this: HasEmail & HasName
 // // thus c = { name: "somename", phone: 21321312321, email: "dsdfsdfsdfsf" }
@@ -217,7 +231,7 @@ interface ContactMessenger1 {
     (contact: HasEmail | HasName, message: string): void
 }
 
-// type alias extending interface
+// type alias extending interface for function call signatures
 type ContactMessenger2 = (
     contact: HasEmail | HasName,
     message: string
@@ -296,7 +310,7 @@ interface PhoneNumberDict1 {
 // const phoneDict1: PhoneNumberDict1 = {
 //     office: { areaCode: 321, num: 131232 },
 //     home: { areaCode: 21233, num: 2312323},
-//     iphone: { areaCode: 123131, num: 1231313} //this "iphone would not throw error"
+//     iphone: { areaCode: 123131, num: 1231313} // this "iphone would not throw error"
 // }
 
 // --------Classes in typescript
